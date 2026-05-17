@@ -8,10 +8,12 @@
     "watch": "Discover Vision"
   },
   "Navigation": {
+    "home": "Home",
     "about": "Biography",
     "experience": "Career",
     "vision": "Vision",
     "gallery": "Gallery",
+    "news": "News",
     "contact": "Contact"
   },
   "About": {
@@ -66,6 +68,15 @@
       "Promoting Global Tourism",
       "Community Harmony & Welfare"
     ]
+  },
+  "Gallery": {
+    "title": "Moments of Service & Leadership",
+    "subtitle": "A visual journey of public service, community interactions, and administrative milestones.",
+    "viewAll": "View All Photos",
+    "videoTitle": "Videos & Speeches",
+    "videoSubtitle": "Watch, Listen & Get Inspired",
+    "backHome": "Back to Home",
+    "videoLabel": "Assembly Speech"
   },
   "Contact": {
     "title": "Get in Touch",

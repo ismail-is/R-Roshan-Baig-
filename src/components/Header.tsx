@@ -1,134 +1,381 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, usePathname } from '@/i18n/routing';
-import { Menu, X } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
+import { Menu, X, Phone, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Declaring the motion-wrapped Link component for mobile stagger animations
+const MotionLink = motion(Link);
+
+const NAV_LINKS = [
+  { key: 'home', defaultLabel: 'Home', href: '/' },
+  { key: 'about', defaultLabel: 'Biography', href: '/#about' },
+  { key: 'vision', defaultLabel: 'Vision', href: '/#vision' },
+  { key: 'gallery', defaultLabel: 'Gallery', href: '/gallery' },
+  { key: 'news', defaultLabel: 'News', href: '/#news' },
+  { key: 'contact', defaultLabel: 'Contact', href: '/#contact' },
+];
 
 export default function Header() {
-  const t = useTranslations('Navigation');
   const pathname = usePathname();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const tNav = useTranslations('Navigation');
+  const locale = useLocale();
+  
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('/');
 
+  // Scroll listener for backdrop blur effect
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 30);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '#about' },
-    { name: 'Leadership', href: '#leadership' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Vision', href: '#vision' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'News', href: '#news' },
-    { name: 'Contact', href: '#contact' },
-  ];
+  // Active section detection via IntersectionObserver
+  useEffect(() => {
+    const sectionIds = NAV_LINKS
+      .filter((l) => l.href.includes('#'))
+      .map((l) => l.href.substring(l.href.indexOf('#') + 1));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(`#${entry.target.id}`);
+          }
+        });
+      },
+      { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
+    );
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  // Smooth-scroll navigation helper
+  const handleNavClick = useCallback((href: string) => {
+    setMobileOpen(false);
+    const hashIndex = href.indexOf('#');
+    if (hashIndex !== -1) {
+      const hash = href.substring(hashIndex);
+      const el = document.querySelector(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, []);
+
+  // Check active state
+  const isActive = (href: string) => {
+    const isHomepage = pathname === '/';
+    if (href === '/') return activeSection === '/' && isHomepage;
+    if (href.includes('#')) {
+      const hash = href.substring(href.indexOf('#'));
+      return activeSection === hash && isHomepage;
+    }
+    // For route links like '/gallery'
+    return pathname.endsWith(href);
+  };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-md py-3' : 'bg-white py-5'
-      }`}
-    >
-      <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3">
-          <div className="relative w-12 h-12 flex-shrink-0">
-            {/* Placeholder for Logo Image - you can replace src with actual logo if available */}
-            <div className="w-full h-full rounded-full border-2 border-saffron flex items-center justify-center bg-white shadow-sm overflow-hidden">
-                <div className="w-6 h-6 bg-gradient-to-br from-green to-navy-blue rounded-full"></div>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <span className="font-poppins font-bold text-xl leading-none tracking-tight">
-              <span className="text-navy-blue">R. ROSHAN </span>
-              <span className="text-green">BAIG</span>
-            </span>
-            <span className="text-[10px] text-gray-500 font-inter font-medium tracking-wide uppercase mt-1">Former Minister, Government of Karnataka</span>
-          </div>
-        </Link>
+    <>
+      <header
+        id="main-header"
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${
+          scrolled
+            ? 'header-scrolled py-2'
+            : 'header-top py-3 md:py-4'
+        }`}
+      >
+        {/* Top accent bar */}
+        <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-saffron via-green to-navy z-10" />
 
-        {/* Desktop Nav */}
-        <nav className="hidden xl:flex items-center justify-center flex-1 mx-8">
-          <ul className="flex items-center gap-6 lg:gap-8">
-            {navLinks.map((link) => (
-              <li key={link.name}>
-                <Link
-                  href={link.href}
-                  className="text-navy-blue font-semibold hover:text-green transition-colors font-inter text-sm relative group"
-                >
-                  {link.name}
-                  {link.name === 'Home' && <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-green"></span>}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Right Actions */}
-        <div className="hidden xl:flex items-center gap-6">
-          <div className="flex items-center gap-2 text-sm font-bold font-inter text-navy-blue">
-            <Link href={pathname} locale="en" className={pathname.startsWith('/en') || pathname === '/' ? 'text-navy-blue' : 'text-gray-400 hover:text-navy-blue'}>EN</Link>
-            <span className="text-gray-300">|</span>
-            <Link href={pathname} locale="kn" className={pathname.startsWith('/kn') ? 'text-navy-blue' : 'text-gray-400 hover:text-navy-blue'}>ಕನ್ನಡ</Link>
-          </div>
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between pt-3">
           
-          <Link href="#contact" className="bg-green text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-[#107006] transition-colors shadow-sm">
-            Get In Touch
-          </Link>
-        </div>
-
-        {/* Mobile Menu Toggle */}
-        <button
-          className="xl:hidden text-navy-blue p-2"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
-      </div>
-
-      {/* Mobile Nav */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="xl:hidden bg-white shadow-xl absolute top-full left-0 w-full overflow-hidden border-t border-gray-100"
+          {/* ===== LOGO ===== */}
+          <Link
+            href="/"
+            className="flex items-center gap-2.5 sm:gap-3 group relative z-10"
+            aria-label="R. Roshan Baig - Home"
           >
-            <div className="flex flex-col p-6 gap-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-lg font-inter font-bold text-navy-blue border-b border-gray-50 pb-3 hover:text-green transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <div className="flex items-center justify-between pt-4">
-                 <div className="flex items-center gap-3 text-lg font-bold font-inter text-navy-blue">
-                    <Link href={pathname} locale="en" className={pathname.startsWith('/en') || pathname === '/' ? 'text-navy-blue' : 'text-gray-400'}>EN</Link>
-                    <span className="text-gray-300">|</span>
-                    <Link href={pathname} locale="kn" className={pathname.startsWith('/kn') ? 'text-navy-blue' : 'text-gray-400'}>ಕನ್ನಡ</Link>
-                </div>
-                <Link href="#contact" onClick={() => setMobileMenuOpen(false)} className="bg-green text-white px-6 py-2.5 rounded-full font-bold text-sm shadow-sm">
-                  Get In Touch
-                </Link>
-              </div>
+            {/* Logo Image */}
+            <div className={`relative overflow-hidden rounded-full ring-2 ring-green/20 group-hover:ring-green/40 transition-all duration-300 shadow-md group-hover:shadow-lg ${
+              scrolled ? 'w-10 h-10 sm:w-11 sm:h-11' : 'w-11 h-11 sm:w-12 sm:h-12'
+            }`}>
+              <Image
+                src="/images/roshan baig/image copy.png"
+                alt="R. Roshan Baig Logo"
+                fill
+                sizes="48px"
+                className="object-cover group-hover:scale-105 transition-transform duration-300"
+                priority
+              />
             </div>
-          </motion.div>
+
+            {/* Name Text */}
+            <div className="flex flex-col">
+              <span className={`font-poppins font-bold leading-tight tracking-tight text-navy transition-all duration-300 ${
+                scrolled ? 'text-[14px] sm:text-[15px] lg:text-[17px]' : 'text-[15px] sm:text-[16px] lg:text-[18px]'
+              }`}>
+                R. ROSHAN <span className="text-green">BAIG</span>
+              </span>
+              <span className={`font-inter font-medium tracking-[0.08em] uppercase text-gray-400 transition-all duration-300 hidden sm:block ${
+                scrolled ? 'text-[8px] lg:text-[9px] mt-0.5' : 'text-[9px] lg:text-[10px] mt-0.5'
+              }`}>
+                Former Minister, Govt. of Karnataka
+              </span>
+            </div>
+          </Link>
+
+          {/* ===== DESKTOP NAV ===== */}
+          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1" aria-label="Main navigation">
+            {NAV_LINKS.map((link) => {
+              const isHash = link.href.includes('#');
+              const isHomepage = pathname === '/';
+              const label = tNav(link.key) || link.defaultLabel;
+
+              return (
+                <Link
+                  key={link.key}
+                  href={link.href}
+                  onClick={(e) => {
+                    if (isHash && isHomepage) {
+                      e.preventDefault();
+                      handleNavClick(link.href);
+                    }
+                  }}
+                  className={`
+                    relative px-3 xl:px-4 py-2 text-[12px] xl:text-[13px] font-inter font-semibold 
+                    transition-all duration-300 group rounded-lg
+                    ${isActive(link.href)
+                      ? 'text-green'
+                      : 'text-gray-600 hover:text-navy'
+                    }
+                  `}
+                >
+                  {label}
+                  {/* Hover underline */}
+                  <span className={`absolute bottom-0.5 left-1/2 -translate-x-1/2 h-[2px] bg-green rounded-full transition-all duration-300 ${
+                    isActive(link.href) ? 'w-5' : 'w-0 group-hover:w-4'
+                  }`} />
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* ===== DESKTOP RIGHT ACTIONS ===== */}
+          <div className="hidden lg:flex items-center gap-3 xl:gap-4">
+            {/* Language Switcher */}
+            <div className="flex items-center bg-gray-100/80 backdrop-blur-md p-1 rounded-full border border-gray-200 shadow-sm text-[11px] font-poppins font-black uppercase tracking-wider relative z-10">
+              <Link
+                href={pathname}
+                locale="en"
+                className={`px-3 py-1.5 rounded-full transition-all ${
+                  locale === 'en'
+                    ? 'bg-navy text-white shadow-sm'
+                    : 'text-gray-500 hover:text-navy'
+                }`}
+              >
+                EN
+              </Link>
+              <Link
+                href={pathname}
+                locale="kn"
+                className={`px-3 py-1.5 rounded-full transition-all ${
+                  locale === 'kn'
+                    ? 'bg-navy text-white shadow-sm font-bold'
+                    : 'text-gray-500 hover:text-navy font-bold'
+                }`}
+              >
+                ಕನ್ನಡ
+              </Link>
+            </div>
+
+            {/* CTA Trigger */}
+            <Link
+              href="/#contact"
+              onClick={(e) => {
+                const isHomepage = pathname === '/';
+                if (isHomepage) {
+                  e.preventDefault();
+                  handleNavClick('#contact');
+                }
+              }}
+              className="bg-navy hover:bg-navy-dark text-white px-5 py-2.5 rounded-full font-poppins font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
+            >
+              Contact
+            </Link>
+          </div>
+
+          {/* ===== MOBILE MENU TRIGGER ===== */}
+          <button
+            onClick={() => setMobileOpen(true)}
+            className="flex lg:hidden w-10 h-10 rounded-full border border-gray-200/80 bg-white/80 backdrop-blur-md items-center justify-center text-navy shadow-sm hover:shadow-md transition-all cursor-pointer relative z-10"
+            aria-label="Open menu"
+          >
+            <Menu size={18} strokeWidth={2.5} />
+          </button>
+
+        </div>
+      </header>
+
+      {/* ===== MOBILE SLIDE-IN NAV DRAWER ===== */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileOpen(false)}
+              className="fixed inset-0 z-[150] bg-black/40 backdrop-blur-sm lg:hidden"
+            />
+
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed right-0 top-0 bottom-0 z-[160] w-full max-w-[320px] bg-white shadow-2xl flex flex-col lg:hidden border-l border-gray-100"
+            >
+              {/* Mobile Drawer Header */}
+              <div className="p-5 flex items-center justify-between border-b border-gray-100">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green to-green-dark flex items-center justify-center shadow-md">
+                    <span className="font-poppins font-black text-white text-[10px]">RB</span>
+                  </div>
+                  <span className="font-poppins font-bold text-sm tracking-tight text-navy">
+                    R. Roshan Baig
+                  </span>
+                </div>
+                <button
+                  onClick={() => setMobileOpen(false)}
+                  className="w-8 h-8 rounded-full bg-gray-50 border border-gray-100 flex items-center justify-center text-gray-500 hover:text-navy cursor-pointer transition-colors"
+                  aria-label="Close menu"
+                >
+                  <X size={18} strokeWidth={2.5} />
+                </button>
+              </div>
+
+              {/* Mobile Nav Links */}
+              <nav className="flex-1 overflow-y-auto px-4 py-4" aria-label="Mobile navigation">
+                <div className="flex flex-col gap-1">
+                  {NAV_LINKS.map((link, i) => {
+                    const isHash = link.href.includes('#');
+                    const isHomepage = pathname === '/';
+                    const label = tNav(link.key) || link.defaultLabel;
+
+                    return (
+                      <MotionLink
+                        key={link.key}
+                        href={link.href}
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.05 * i + 0.1, duration: 0.3 }}
+                        onClick={(e) => {
+                          if (isHash && isHomepage) {
+                            e.preventDefault();
+                            handleNavClick(link.href);
+                          } else {
+                            setMobileOpen(false);
+                          }
+                        }}
+                        className={`
+                          flex items-center justify-between px-4 py-3.5 rounded-xl text-[15px] font-poppins font-semibold 
+                          transition-all duration-200 group
+                          ${isActive(link.href)
+                            ? 'bg-green/8 text-green'
+                            : 'text-gray-700 hover:bg-gray-50 hover:text-navy'
+                          }
+                        `}
+                      >
+                        <span className="flex items-center gap-3">
+                          <span className={`w-1.5 h-1.5 rounded-full transition-all ${
+                            isActive(link.href) ? 'bg-green scale-125' : 'bg-gray-300 group-hover:bg-navy'
+                          }`} />
+                          {label}
+                        </span>
+                        <ChevronRight size={16} className={`transition-all duration-200 ${
+                          isActive(link.href) ? 'text-green opacity-100' : 'opacity-0 group-hover:opacity-60 group-hover:translate-x-0.5'
+                        }`} />
+                      </MotionLink>
+                    );
+                  })}
+                </div>
+              </nav>
+
+              {/* Mobile Bottom Actions */}
+              <div className="px-4 pb-6 pt-4 border-t border-gray-100 space-y-3">
+                {/* Language Switcher */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.45 }}
+                  className="flex items-center gap-2"
+                >
+                  <Link
+                    href={pathname}
+                    locale="en"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 text-center bg-navy text-white py-3 rounded-xl font-poppins font-bold text-[13px] shadow-sm hover:bg-navy-dark transition-all"
+                  >
+                    English
+                  </Link>
+                  <Link
+                    href={pathname}
+                    locale="kn"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 text-center bg-gray-100 text-navy py-3 rounded-xl font-poppins font-bold text-[13px] border border-gray-200 hover:bg-gray-200 transition-all font-bold"
+                  >
+                    ಕನ್ನಡ
+                  </Link>
+                </motion.div>
+
+                {/* CTA */}
+                <MotionLink
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
+                  href="/#contact"
+                  onClick={(e) => {
+                    const isHomepage = pathname === '/';
+                    if (isHomepage) {
+                      e.preventDefault();
+                      handleNavClick('#contact');
+                    } else {
+                      setMobileOpen(false);
+                    }
+                  }}
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-green to-green-dark text-white py-3.5 rounded-xl font-poppins font-bold text-[14px] shadow-[0_4px_15px_rgba(14,122,61,0.25)] hover:shadow-[0_6px_20px_rgba(14,122,61,0.35)] transition-all cursor-pointer"
+                >
+                  <Phone size={15} />
+                  Get In Touch
+                </MotionLink>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }

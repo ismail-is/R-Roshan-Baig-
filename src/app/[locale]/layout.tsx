@@ -36,7 +36,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${inter.variable} ${poppins.variable} ${cinzel.variable} ${notoSansKannada.variable}`}>
-      <body className="font-sans bg-off-white text-text-dark antialiased">
+      <body className="font-sans bg-cream text-gray-900 antialiased">
         <NextIntlClientProvider messages={messages}>
           <SmoothScrolling>
             <Header />

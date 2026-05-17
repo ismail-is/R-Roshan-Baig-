@@ -9,7 +9,7 @@ import NewsAndTestimonials from '@/components/NewsAndTestimonials';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#F8F9FA]">
+    <main className="min-h-screen bg-cream">
       <Hero />
       <Stats />
       <About />

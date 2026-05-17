@@ -1,13 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  --color-green: #138808;
-  --color-saffron: #FF9933;
-  --color-navy-blue: #000080;
-  --color-off-white: #FFFFFF;
-  --color-light-gold: #D6B36A;
-  --color-text-dark: #111827;
+  /* === Primary Palette === */
+  --color-green: #0E7A3D;
+  --color-green-dark: #096B32;
+  --color-green-light: #E8F5EE;
+  --color-saffron: #F28C28;
+  --color-saffron-dark: #D97B1E;
+  --color-saffron-light: #FFF3E6;
+  --color-navy: #0A2A66;
+  --color-navy-dark: #071E4A;
+  --color-navy-light: #E8ECF3;
 
+  /* === Neutral Palette === */
+  --color-cream: #F8F7F2;
+  --color-white: #FFFFFF;
+  --color-gray-50: #FAFAF8;
+  --color-gray-100: #F0EFEA;
+  --color-gray-200: #E2E0D9;
+  --color-gray-300: #C5C3BB;
+  --color-gray-400: #9C9A93;
+  --color-gray-500: #74726C;
+  --color-gray-600: #5A5854;
+  --color-gray-700: #3D3C39;
+  --color-gray-800: #252422;
+  --color-gray-900: #141311;
+
+  /* === Fonts === */
   --font-inter: var(--font-inter);
   --font-poppins: var(--font-poppins);
   --font-cinzel: var(--font-cinzel);
@@ -16,17 +35,121 @@
 
 :root {
   --background: #F8F7F2;
-  --foreground: #111827;
+  --foreground: #141311;
+}
+
+* {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+::selection {
+  background: #0E7A3D;
+  color: white;
+}
+
+/* === Utility Classes === */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .glass {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .glass-dark {
+    background: rgba(10, 42, 102, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .section-padding {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* === Header Styles === */
+.header-top {
+  background: rgba(248, 247, 242, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.header-scrolled {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.04),
+    0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Safe area for mobile notches */
+@supports (padding-top: env(safe-area-inset-top)) {
+  #main-header {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* === Premium Animations === */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(14, 122, 61, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(14, 122, 61, 0.4); }
+}
+@keyframes spin-slow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes spin-slow-reverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float-slow 8s ease-in-out infinite;
+  }
+  .animate-shimmer {
+    animation: shimmer 3s linear infinite;
+    background-size: 200% 100%;
+  }
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  .animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+  }
+  .animate-spin-slow-reverse {
+    animation: spin-slow-reverse 15s linear infinite;
   }
 }
