@@ -305,26 +305,7 @@ export default function NewsAndTestimonials() {
             {/* Feed Header */}
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-gray-100 pb-6">
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 bg-[#1877f2]/10 border border-[#1877f2]/20 rounded-full px-4 py-1.5 relative group">
-                  <span className="w-2 h-2 rounded-full bg-[#1877f2] animate-pulse" />
-                  <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-[#1877f2] flex items-center gap-1.5">
-                    <FacebookIcon className="w-3 h-3" /> Live Facebook Updates
-                  </span>
-                  
-                  {/* Subtle, beautiful gear icon to trigger Admin Modal */}
-                  <button 
-                    onClick={() => {
-                      setIsAdminOpen(true);
-                      setIsUnlocked(false);
-                      setPassword('');
-                      setLoginError('');
-                    }}
-                    className="ml-2 p-1 text-gray-400 hover:text-[#1877f2] transition-colors rounded-full hover:bg-[#1877f2]/10"
-                    title="Feed Administration Panel"
-                  >
-                    <Settings className="w-3.5 h-3.5 animate-spin-slow" />
-                  </button>
-                </div>
+                
                 
                 <h2 className="font-poppins text-3xl md:text-4xl font-black text-navy leading-tight">
                   News & Social Updates
@@ -346,7 +327,7 @@ export default function NewsAndTestimonials() {
               </a>
             </div>
 
-            {/* Post-wise 4 Latest Posts Grid */}
+            {/* Live Facebook Updates Grid (Ultra-Premium Card UI) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {feedData.posts.map((post, i) => {
                 const isLiked = likedPosts[post.id];
@@ -381,11 +362,11 @@ export default function NewsAndTestimonials() {
                             </h4>
                             <VerifiedBadge />
                           </div>
-                          <div className="flex items-center gap-1 text-[10px] text-gray-400 font-inter mt-0.5">
+                          {/* <div className="flex items-center gap-1 text-[10px] text-gray-400 font-inter mt-0.5">
                             <span>{post.date}</span>
                             <span>•</span>
                             <Globe className="w-3 h-3 text-gray-400" />
-                          </div>
+                          </div> */}
                         </div>
                       </div>
                       
@@ -401,12 +382,12 @@ export default function NewsAndTestimonials() {
                       </p>
                     </div>
 
-                    {/* Post Media Image - Full Aspect Ratio Preservation (No Cropping) */}
-                    <div className="relative w-full overflow-hidden bg-gray-50 flex items-center justify-center border-y border-gray-100 min-h-[220px]">
+                    {/* Post Media Image - Full Aspect Ratio Preservation (No Cropping, Full Height) */}
+                    <div className="relative w-full overflow-hidden bg-gray-50 flex items-center justify-center border-y border-gray-100">
                       <img 
                         src={post.imageUrl} 
                         alt="Facebook update attachment" 
-                        className="w-full h-auto max-h-[400px] object-contain transition-transform duration-700 group-hover:scale-[1.02]" 
+                        className="w-full h-auto block transition-transform duration-700 group-hover:scale-[1.02]" 
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-transparent pointer-events-none" />
                       
@@ -624,14 +605,14 @@ export default function NewsAndTestimonials() {
                   
                   {/* Dynamically editable follower/following display */}
                   <div className="flex items-center gap-2.5 text-[11px] text-gray-400 font-inter font-semibold pt-2.5">
-                    <span className="flex items-center gap-1">
+                    {/* <span className="flex items-center gap-1">
                       <ThumbsUp className="w-3.5 h-3.5 text-[#1877f2] fill-current" /> 
                       {feedData.followers}
-                    </span>
+                    </span> */}
                     <span className="w-1 h-1 rounded-full bg-gray-200" />
-                    <span className="text-gray-500 font-bold">
+                    {/* <span className="text-gray-500 font-bold">
                       {feedData.following}
-                    </span>
+                    </span> */}
                   </div>
                 </div>
 
@@ -752,7 +733,7 @@ export default function NewsAndTestimonials() {
                             required
                           />
                         </div>
-                        <div className="space-y-1">
+                        {/* <div className="space-y-1">
                           <label className="text-[10px] font-bold text-gray-500 font-poppins uppercase">Following Count</label>
                           <input 
                             type="text" 
@@ -762,7 +743,7 @@ export default function NewsAndTestimonials() {
                             className="w-full px-4 py-2 border border-gray-200 rounded-xl text-xs font-inter focus:outline-none focus:ring-1 focus:ring-green focus:border-green"
                             required
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
 

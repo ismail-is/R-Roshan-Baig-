@@ -32,30 +32,39 @@ export default function Stats() {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent pointer-events-none" />
 
         {/* Content Layout */}
-        <div className="relative z-10 px-6 py-8 sm:px-8 md:px-10 lg:px-12 flex flex-col lg:flex-row justify-between items-stretch gap-6 lg:gap-2">
+        <div className="relative z-10 px-5 py-6 sm:px-6 sm:py-7 md:px-8 lg:px-12 grid grid-cols-1 sm:grid-cols-6 lg:grid-cols-5 gap-3.5 sm:gap-4 md:gap-6 lg:gap-2">
           
           {stats.map((s, i) => (
-            <div key={i} className="flex-1 flex flex-col sm:flex-row items-center lg:items-stretch gap-4 sm:gap-0 relative group">
+            <div 
+              key={i} 
+              className={`flex items-stretch relative group ${
+                i === 0 ? "col-span-1 sm:col-span-2 lg:col-span-1" :
+                i === 1 ? "col-span-1 sm:col-span-2 lg:col-span-1" :
+                i === 2 ? "col-span-1 sm:col-span-2 lg:col-span-1" :
+                i === 3 ? "col-span-1 sm:col-span-3 lg:col-span-1" :
+                "col-span-1 sm:col-span-3 lg:col-span-1"
+              }`}
+            >
               
               {/* Stat card wrapper */}
               <motion.div 
                 whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="w-full flex items-center justify-center sm:justify-start gap-4 p-3.5 sm:p-2.5 rounded-2xl hover:bg-white/[0.03] border border-transparent hover:border-white/[0.05] transition-all duration-300 cursor-default"
+                className="w-full flex items-center justify-start gap-4 p-3.5 sm:p-3.5 lg:p-2 rounded-2xl hover:bg-white/[0.03] border border-transparent hover:border-white/[0.05] transition-all duration-300 cursor-default"
               >
                 {/* Glowing Circular Icon Container */}
-                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center text-white shadow-lg ${s.glow} group-hover:scale-108 transition-all duration-300 relative overflow-hidden`}>
+                <div className={`w-11 h-11 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br ${s.color} flex items-center justify-center text-white shadow-lg ${s.glow} group-hover:scale-108 transition-all duration-300 relative overflow-hidden flex-shrink-0`}>
                   {/* Subtle inner glare */}
                   <div className="absolute top-0 left-0 w-full h-1/2 bg-white/10" />
-                  <s.icon size={22} strokeWidth={2} className="relative z-10" />
+                  <s.icon className="w-5.5 h-5.5 sm:w-[22px] sm:h-[22px] relative z-10" strokeWidth={2} />
                 </div>
 
                 {/* Text Values */}
-                <div className="flex flex-col text-center sm:text-left">
-                  <span className="font-poppins font-black text-white text-xl md:text-2xl leading-none tracking-tight">
+                <div className="flex flex-col text-left">
+                  <span className="font-poppins font-black text-white text-lg sm:text-lg md:text-xl lg:text-2xl leading-none tracking-tight">
                     {s.value}
                   </span>
-                  <span className="font-inter text-[10px] sm:text-[11px] text-gray-300 font-semibold tracking-wider uppercase mt-1 leading-tight group-hover:text-white transition-colors duration-300">
+                  <span className="font-inter text-[10px] sm:text-[10px] md:text-[11px] text-gray-300 font-semibold tracking-wider uppercase mt-1.5 leading-tight group-hover:text-white transition-colors duration-300">
                     {s.label}
                   </span>
                 </div>

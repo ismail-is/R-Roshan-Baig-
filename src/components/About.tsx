@@ -194,7 +194,7 @@ export default function About() {
                 whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.65, duration: 0.8, type: "spring", stiffness: 70 }}
-                className="absolute bottom-[16%] -left-10 sm:-left-14 z-20"
+                className="absolute bottom-[16%] -left-8 sm:-left-14 z-20 "
               >
                 <div className="relative p-[2.5px] rounded-2xl bg-gradient-to-br from-saffron via-white to-green shadow-[0_20px_45px_rgba(14,122,61,0.22)] hover:scale-105 transition-all duration-300 max-w-[195px] glass">
                   <div className="bg-white/92 backdrop-blur-md p-5 rounded-[14px]">
