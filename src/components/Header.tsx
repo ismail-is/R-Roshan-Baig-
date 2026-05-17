@@ -181,14 +181,14 @@ export default function Header() {
             })}
           </nav>
 
-          {/* ===== DESKTOP RIGHT ACTIONS ===== */}
-          <div className="hidden lg:flex items-center gap-3 xl:gap-4">
-            {/* Language Switcher */}
-            <div className="flex items-center bg-gray-100/80 backdrop-blur-md p-1 rounded-full border border-gray-200 shadow-sm text-[11px] font-poppins font-black uppercase tracking-wider relative z-10">
+          {/* ===== RIGHT ACTIONS ===== */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 lg:gap-4 relative z-10">
+            {/* Language Switcher - Always Visible */}
+            <div className="flex items-center bg-gray-100/80 backdrop-blur-md p-0.5 sm:p-1 rounded-full border border-gray-200 shadow-sm text-[9px] sm:text-[11px] font-poppins font-black uppercase tracking-wider relative z-10">
               <Link
                 href={pathname}
                 locale="en"
-                className={`px-3 py-1.5 rounded-full transition-all ${
+                className={`px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-full transition-all ${
                   locale === 'en'
                     ? 'bg-navy text-white shadow-sm'
                     : 'text-gray-500 hover:text-navy'
@@ -199,7 +199,7 @@ export default function Header() {
               <Link
                 href={pathname}
                 locale="kn"
-                className={`px-3 py-1.5 rounded-full transition-all ${
+                className={`px-2 py-1.5 sm:px-3 sm:py-1.5 rounded-full transition-all ${
                   locale === 'kn'
                     ? 'bg-navy text-white shadow-sm font-bold'
                     : 'text-gray-500 hover:text-navy font-bold'
@@ -209,7 +209,7 @@ export default function Header() {
               </Link>
             </div>
 
-            {/* CTA Trigger */}
+            {/* CTA Trigger - Desktop only */}
             <Link
               href="/#contact"
               onClick={(e) => {
@@ -219,20 +219,20 @@ export default function Header() {
                   handleNavClick('#contact');
                 }
               }}
-              className="bg-navy hover:bg-navy-dark text-white px-5 py-2.5 rounded-full font-poppins font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
+              className="hidden lg:block bg-navy hover:bg-navy-dark text-white px-5 py-2.5 rounded-full font-poppins font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all"
             >
               Contact
             </Link>
-          </div>
 
-          {/* ===== MOBILE MENU TRIGGER ===== */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="flex lg:hidden w-10 h-10 rounded-full border border-gray-200/80 bg-white/80 backdrop-blur-md items-center justify-center text-navy shadow-sm hover:shadow-md transition-all cursor-pointer relative z-10"
-            aria-label="Open menu"
-          >
-            <Menu size={18} strokeWidth={2.5} />
-          </button>
+            {/* ===== MOBILE MENU TRIGGER ===== */}
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="flex lg:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-gray-200/80 bg-white/80 backdrop-blur-md items-center justify-center text-navy shadow-sm hover:shadow-md transition-all cursor-pointer relative z-10"
+              aria-label="Open menu"
+            >
+              <Menu size={16} className="sm:w-[18px] sm:h-[18px]" strokeWidth={2.5} />
+            </button>
+          </div>
 
         </div>
       </header>
