@@ -1,0 +1,82 @@
+{
+  "Hero": {
+    "title": "R. Roshan Baig",
+    "subtitle": "Former Cabinet Minister & Seven-Time MLA",
+    "tagline": "A Legacy of Leadership",
+    "quote": "Committed to public service, progress, and unity for the people of Karnataka.",
+    "explore": "Explore Journey",
+    "watch": "Discover Vision"
+  },
+  "Navigation": {
+    "about": "Biography",
+    "experience": "Career",
+    "vision": "Vision",
+    "gallery": "Gallery",
+    "contact": "Contact"
+  },
+  "About": {
+    "title": "A Life in Public Service",
+    "subtitle": "Decades of dedicated public service to the people of Karnataka.",
+    "bio1": "R. Roshan Baig is a veteran Indian politician who served as a seven-time Member of the Legislative Assembly (MLA) for the Shivajinagar constituency in Bengaluru, Karnataka. He entered public life with a deep commitment to social welfare.",
+    "bio2": "Throughout his distinguished career, he has held key portfolios in the Karnataka state government, serving as the Minister of Home Affairs, Minister for Urban Development, Infrastructure & Haj, and Minister for Tourism. His focus has consistently been on community empowerment and state infrastructure.",
+    "quote": "Leadership is not about the position you hold, but the positive impact you create in the lives of the people.",
+    "timeline": {
+      "t1": "Entered Public Life & First Elected as MLA (1985)",
+      "t2": "Appointed Minister of Home Affairs",
+      "t3": "Appointed Minister for Tourism",
+      "t4": "Appointed Minister for Urban Development & Haj"
+    }
+  },
+  "Experience": {
+    "title": "Leadership & Experience",
+    "subtitle": "A track record of effective governance and administrative excellence.",
+    "cards": [
+      {
+        "title": "Urban Development",
+        "desc": "Spearheaded major infrastructure and civic projects in Bengaluru as the Minister for Urban Development."
+      },
+      {
+        "title": "Home Affairs",
+        "desc": "Served as the Minister of Home Affairs, overseeing state security and public order."
+      },
+      {
+        "title": "Tourism & Industries",
+        "desc": "Promoted Karnataka's rich heritage globally as Minister for Tourism and Medium & Small Scale Industries."
+      },
+      {
+        "title": "Haj & Wakf",
+        "desc": "Ensured smooth and efficient management of Haj operations for pilgrims and community welfare."
+      },
+      {
+        "title": "Seven-Time MLA",
+        "desc": "Represented the Shivajinagar and Jayamahal constituencies over seven consecutive terms with strong public support."
+      },
+      {
+        "title": "Social Activism",
+        "desc": "Advocating for youth empowerment, education, and issues concerning minority communities."
+      }
+    ]
+  },
+  "Vision": {
+    "title": "Vision for Karnataka",
+    "subtitle": "Building a progressive, inclusive, and modern state for the next generation.",
+    "points": [
+      "Modernizing Bengaluru Infrastructure",
+      "Educational Empowerment for Minorities",
+      "Promoting Global Tourism",
+      "Community Harmony & Welfare"
+    ]
+  },
+  "Contact": {
+    "title": "Get in Touch",
+    "subtitle": "Reach out for public service inquiries and community support.",
+    "address": "Shivajinagar, Bengaluru, Karnataka",
+    "phone": "Contact Office",
+    "email": "Email Address",
+    "send": "Send Message"
+  },
+  "Footer": {
+    "rights": "All rights reserved.",
+    "slogan": "Serving the people with dedication."
+  }
+}
