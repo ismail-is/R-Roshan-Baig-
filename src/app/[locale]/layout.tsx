@@ -17,6 +17,11 @@ export const metadata = {
   title: 'R. Roshan Baig | Former Minister & Seven-Time MLA',
   description: 'Official portfolio of R. Roshan Baig, Former Minister, Government of Karnataka and Seven-Time MLA from Shivajinagar, Bengaluru. A visionary leader committed to public service.',
   keywords: 'R. Roshan Baig, Roshan Baig, Karnataka Minister, Shivajinagar MLA, Indian Politician, Bengaluru',
+  icons: {
+    icon: '/images/roshan baig/image copy.png',
+    shortcut: '/images/roshan baig/image copy.png',
+    apple: '/images/roshan baig/image copy.png',
+  },
 };
 
 export default async function LocaleLayout({
